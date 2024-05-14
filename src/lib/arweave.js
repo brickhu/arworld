@@ -63,6 +63,16 @@ export const getCurrentWalletInfo = async() => {
    }
 }
 
+export const getCurrentWalletKey = async() => {
+  const address = window.localStorage.getItem("currentWallet")
+  if(!address) return
+  const wallets = JSON.parse(window.localStorage.getItem('wallets')) 
+  if(wallets.length<=0) return
+  const theWallet = wallets.find((item)=>item.address = address)
+  if(!theWallet) return
+  return theWallet?.key
+}
+
 export const getBalance = async(address) => {
   const balance = await arweave.wallets.getBalance(address)
   if(balance<=0) {
@@ -74,7 +84,7 @@ export const getBalance = async(address) => {
 
 export const getKeyByAddress = (address) => {
   const wallets = JSON.parse(window.localStorage.getItem('wallets')) 
-  console.log(wallets.length)
+  // console.log(wallets.length)
   if(wallets.length<=0) return
   const theWallet = wallets.find((item)=>item.address = address)
   if(!theWallet) return
@@ -104,3 +114,6 @@ export const postDataItem = async({data,tags},jwk) => {
   }
 }
 
+export const getData = async(tx,option) => {
+  return await arweave.transactions.getData(tx,option)
+}
